@@ -1,6 +1,7 @@
 var tasks = {};
 
 var createTask = function(taskText, taskDate, taskList) {
+  //debugger;
   // create elements that make up a task item
   var taskLi = $("<li>").addClass("list-group-item");
   var taskSpan = $("<span>")
@@ -39,10 +40,61 @@ var loadTasks = function() {
       createTask(task.text, task.date, list);
     });
   });
+
+   // Make all task editable at any time.
+
+   $(".list-group").on("click", "p", function() {
+    console.log("<p> was clicked");
+    console.log(this);
+    var text = $(this)
+    .text()
+    .trim();
+    var textInput = $("<textarea>")
+    .addClass("form-control")
+    .val(text);
+    // replace (this) which is a p element with the form of bootstrap called form-control
+    $(this).replaceWith(textInput); // You have to click to becomo editable
+    textInput.trigger("focus"); // Once the p is replaced with form and clicked, it will be highlighted
+    console.log(text);
+  });
+
+  $(".list-group").on("blur", "textarea", function() {
+    // get the textarea's current value/text
+    var text = $(this)
+    .val()
+    .trim();
+
+    // get the parent ul's id attribute
+    var status = $(this)
+    .closest(".list-group")
+    .attr("id")
+    .replace("list-", "");
+
+    // get the task's position in the list of other li elements
+    var index = $(this)
+    .closest(".list-group-item")
+    .index();
+    console.log("I am inside blur");
+
+    tasks[status][index].text = text; // tasks.ToDo[0].text = "Text variable"
+    saveTasks();
+
+    // recreate p element
+    var taskP = $("<p>")
+    .addClass("m-1")
+    .text(text);
+
+    // replace textarea with p element
+    $(this).replaceWith(taskP);
+      });
+
+
 };
 
 var saveTasks = function() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
+
+
 };
 
 
@@ -78,7 +130,7 @@ $("#task-form-modal .btn-primary").click(function() {
       date: taskDate
     });
 
-    saveTasks();
+  
   }
 });
 
