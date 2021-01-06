@@ -166,6 +166,7 @@ $(".list-group").on("click", "p", function() {
 
 // editable field was un-focused
 $(".list-group").on("blur", "textarea", function() {
+
   // get current value of textarea
   var text = $(this).val();
 
@@ -191,8 +192,9 @@ $(".list-group").on("blur", "textarea", function() {
   $(this).replaceWith(taskP);
 });
 
-// due date was clicked
+// due date was clicked inside the created task for edit
 $(".list-group").on("click", "span", function() {
+  /*
   // get current text
   var date = $(this)
     .text()
@@ -207,6 +209,31 @@ $(".list-group").on("click", "span", function() {
 
   // automatically bring up the calendar
   dateInput.trigger("focus");
+  */
+  // Code above is before using jQuery datepicker
+  //New code below
+    // get current text
+    var date = $(this).text().trim();
+
+    // create new input element
+    var dateInput = $("<input>")
+    .attr("type", "text")
+    .addClass("form-control")
+    .val(date);
+  
+    $(this).replaceWith(dateInput);
+  
+    // enable jquery ui datepicker
+    dateInput.datepicker({
+      minDate: 1,
+      onClose: function() {
+        // when calendar is closed, force a "change" event on the `dateInput`
+        $(this).trigger("change");
+      }
+        });
+      
+    // automatically bring up the calendar
+    dateInput.trigger("focus");
 });
 
 // value of due date was changed
@@ -245,3 +272,8 @@ $("#remove-tasks").on("click", function() {
 
 // load tasks for the first time
 loadTasks();
+
+// Datepicker jquery UI datepicker() property funcition
+$("#modalDueDate").datepicker({
+  minDate: 1 // Modify the object datepicker mindDate = 1 to avoid picking up the past date
+});
