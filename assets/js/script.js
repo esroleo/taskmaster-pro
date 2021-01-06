@@ -13,6 +13,7 @@ var createTask = function(taskText, taskDate, taskList) {
 
   // append span and p element to parent li
   taskLi.append(taskSpan, taskP);
+  
 
 
   // append to ul list on the page
@@ -268,4 +269,22 @@ $(".card .list-group").sortable({
     console.log(tempArr);
 
   }
+});
+
+// Dropable jquery UI
+$("#trash").droppable({
+  accept: ".card .list-group-item",
+  tolerance: "touch",
+  drop: function(event, ui) {
+    console.log("drop");
+    ui.draggable.remove();
+  },
+  over: function(event, ui) {
+    console.log("over");
+  },
+  out: function(event, ui) {
+    console.log("out");
+  }
+
+  
 });
