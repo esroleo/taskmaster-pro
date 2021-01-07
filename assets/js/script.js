@@ -317,3 +317,10 @@ $("#modalDueDate").datepicker({
   minDate: 1 // Modify the object datepicker mindDate = 1 to avoid picking up the past date
 });
 
+// Timer to check the status of tasks
+setInterval(function () {
+  $(".card .list-group-item").each(function(index, el) {
+    //console.log(el);
+    auditTask(el);
+  });
+}, (1000 * 60) * 30); //Milliseconds converter where 30 is the minutes you want.
